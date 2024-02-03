@@ -1,0 +1,66 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8182/realms/ecommerce
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id : spring-client
+            authorization-grant-type: authorization_code
+            scope : openid
+      resourceserver:
+        jwt:
+
+          jwk-set-uri: http://localhost:8182/realms/ecommerce/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8182/realms/ecommerce
+  jackson:
+    time-zone: Europe/Rome
+  application:
+    name: Project_PSW
+  datasource:
+    password: '123456789'
+    driver-class-name: org.postgresql.Driver
+    username: 'postgres'
+    url: jdbc:postgresql://localhost:5432/ecommerceDB
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Europe/Rome
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      jdbc:
+        lob:
+          non_contextual_creation:
+            true
+      ddl-auto:
+        update
+  compression:
+    enabled: 'true'
+server:
+  port: '8080'
+
+keycloak:
+  resource: fakestore-angular
+
+logging:
+  level:
+    it:
+      frankladder: DEBUG
+    org:
+      springframework: INFO
+
+jwt:
+  auth:
+    converter:
+      resource-id:
+        spring-client
+      principle-attribute:
+        preferred_username
